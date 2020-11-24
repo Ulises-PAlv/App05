@@ -1,0 +1,79 @@
+<h4>Validacion de formularios <small>Lado del Template</small></h4>
+<hr>
+<form autocomplete="off" (ngSubmit)="enviar(form)" #form="ngForm">
+    <div class="col-12">
+        <!-- Primer input -->
+        <div class="form-group row">
+            <label for="nombre" class="col-2 col-form-label">Nombre</label>
+            <div class="col-8">
+                <input type="text" class="form-control" required [ngModel]="usuario.nombre" minlength="6" name="nombre" placeholder="Nombre" #nombre="ngModel" [class.is-valid]="nombre.valid" [class.is-invalid]="nombre.invalid && nombre.touched">
+                <div *ngIf="nombre.errors?.required" class="invalid-feedback">
+                    Campo obligatorio
+                </div>
+                <div *ngIf="nombre.errors?.minlength" class="invalid-feedback">
+                    Longitud inválida
+                </div>
+            </div>
+        </div>
+        <!-- Segundo input -->
+        <div class="form-group row">
+            <label for="apellido" class="col-2 col-form-label">Apellido</label>
+            <div class="col-8">
+                <input type="text" class="form-control" required [ngModel]="usuario.apellido" minlength="3" name="apellido" placeholder="Apellido" #apellido="ngModel" [class.is-valid]="apellido.valid" [class.is-invalid]="apellido.invalid && apellido.touched">
+                <div *ngIf="apellido.errors?.required" class="invalid-feedback">
+                    Campo obligatorio
+                </div>
+                <div *ngIf="apellido.errors?.minlength" class="invalid-feedback">
+                    Lognitud inválida
+                </div>
+            </div>
+        </div>
+        <!-- Tercer input [a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$ -->
+        <div class="form-group row">
+            <label for="email" class="col-2 col-form-label">Email</label>
+            <div class="col-8">
+                <input type="email" class="form-control" required [ngModel]="usuario.email" name="correo" placeholder="Email" #correo="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [class.is-valid]="correo.valid" [class.is-invalid]="correo.invalid && correo.touched">
+                <div *ngIf="correo.errors?.required" class="invalid-feedback">
+                    Campo obligatorio
+                </div>
+                <div *ngIf="correo.errors?.pattern" class="invalid-feedback">
+                    Patrón de correo electrónico inválido
+                </div>
+            </div>
+        </div>
+        <!-- Input Select -->
+        <div class="form-group row">
+            <label for="" class="col-2 col-form-label">País</label>
+            <div class="col-8">
+                <select name="pais" #pais="ngModel" [ngModel]="usuario.pais" class="form-control" required [class.is-valid]="pais.valid" [class.is-invalid]="pais.invalid && pais.touched">
+                    <option *ngFor="let pais of Countries" [value]="pais.code">{{pais.name}}</option>
+                </select>
+                <div *ngIf="pais.errors?.required" class="invalid-feedback">
+                    Campo obligatorio
+                </div>
+            </div>
+        </div>
+        <!-- Input Radio -->
+        <div class="form-group row">
+            <div class="col-21">
+                <div class="form-check form-check-inline" >
+                    <input name="genere" type="radio" #genero class="form-check-input" [ngModel]="usuario.genero" value="f">
+                    <label for="" class="form-check-label">Femenino</label>
+                </div>
+                <div class="form-check form-check-inline" >
+                    <input name="genere" type="radio" class="form-check-input" #genero [ngModel]="usuario.genero" value="m">
+                    <label for="" class="form-check-label">Masculino</label>
+                </div>
+            </div>
+        </div>
+        <!-- Botón enviar -->
+        <div class="form-group row">
+            <div class="col-10 input-group">
+                <button [disabled]="!form.valid" class="btn btn-outline-success btn-block" type="submit">Guardar</button>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-danger" *ngIf="!form.valid && !form.untouched && form.submitted">
+        Error de formulario
+    </div>
+</form>
